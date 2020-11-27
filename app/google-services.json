@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "996518807952",
+    "firebase_url": "https://samplecrud-c4c36.firebaseio.com",
+    "project_id": "samplecrud-c4c36",
+    "storage_bucket": "samplecrud-c4c36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996518807952:android:89accffd352e90ef6a0b15",
+        "android_client_info": {
+          "package_name": "com.example.samplecrud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996518807952-eoe4vu6ddlhavd5mhmclbvmcdk71jtns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.samplecrud",
+            "certificate_hash": "acaea71c1d257ff20b407ddf25d43db8a5c238bf"
+          }
+        },
+        {
+          "client_id": "996518807952-2ndkh7rtlr6oe3mifff0nt7kmsgquv24.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrYDddB86v5kQ9R9JHtgwMFY89mTI4vAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996518807952-2ndkh7rtlr6oe3mifff0nt7kmsgquv24.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
