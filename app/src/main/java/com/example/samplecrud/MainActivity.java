@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
-    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +109,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.child("Users").child(firebaseUser.getPhoneNumber()).getValue(User.class);
-                name.setText(user.getName());
-                age.setText(user.getAge());
-                email.setText(user.getEmail());
-                add.setText(user.getAddress());
-                fath.setText(user.getFather());
+                if (user == null){}
+                else {
+                    name.setText(user.getName());
+                    age.setText(user.getAge());
+                    email.setText(user.getEmail());
+                    add.setText(user.getAddress());
+                    fath.setText(user.getFather());
+                }
                 progressBar.setVisibility(View.GONE);
             }
 
