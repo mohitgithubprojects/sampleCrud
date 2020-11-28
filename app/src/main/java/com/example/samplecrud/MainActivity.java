@@ -136,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void createPdf(){
 
-        if (email.getText().toString().isEmpty()){
-            Toast.makeText(MainActivity.this,"Please enter your email-id.",Toast.LENGTH_SHORT).show();
+        if (name.getText().toString().isEmpty()){
+            Toast.makeText(MainActivity.this,"Please enter your name.",Toast.LENGTH_SHORT).show();
 
         }else {
             SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("userId",email.getText().toString());
+            editor.putString("userId",name.getText().toString().trim());
             editor.commit();
 
             PdfDocument pdfDocument = new PdfDocument();
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             String addd = "Address :- "+add.getText().toString();
             String fathh = "Father's Name :- "+fath.getText().toString();
 
-            writeNewUser(email.getText().toString(), name.getText().toString(), age.getText().toString(), email.getText().toString(),
+            writeNewUser(name.getText().toString().trim(), name.getText().toString(), age.getText().toString(), email.getText().toString(),
                     add.getText().toString(), fath.getText().toString());
 
             ArrayList<String> arrayList = new ArrayList<>();
