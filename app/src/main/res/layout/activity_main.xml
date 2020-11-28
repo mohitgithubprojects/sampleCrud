@@ -140,9 +140,11 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="30dp"
+                android:layout_marginBottom="20dp"
                 android:elevation="20dp"
                 app:cardBackgroundColor="@color/black"
                 app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fathEdt">
@@ -158,32 +160,32 @@
                     android:textStyle="bold"></TextView>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/signoutBtn"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="20dp"
-                android:elevation="20dp"
-                app:cardBackgroundColor="@color/black"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/createBtn">
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:id="@+id/signoutBtn"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_marginStart="30dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginEnd="30dp"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:elevation="20dp"-->
+<!--                app:cardBackgroundColor="@color/black"-->
+<!--                app:cardCornerRadius="20dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/createBtn">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Sign Out"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold"></TextView>
-            </androidx.cardview.widget.CardView>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="Sign Out"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="22sp"-->
+<!--                    android:textStyle="bold"></TextView>-->
+<!--            </androidx.cardview.widget.CardView>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

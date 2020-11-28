@@ -8,8 +8,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
@@ -44,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
     Boolean perm = false;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    FirebaseUser firebaseUser;
     ProgressBar progressBar;
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +62,21 @@ public class MainActivity extends AppCompatActivity {
         add = findViewById(R.id.addEdt);
         fath = findViewById(R.id.fathEdt);
         button = findViewById(R.id.createBtn);
-        signout = findViewById(R.id.signoutBtn);
+//        signout = findViewById(R.id.signoutBtn);
         progressBar = findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                finish();
-            }
-        });
+//        signout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FirebaseAuth.getInstance().signOut();
+//                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+//                finish();
+//            }
+//        });
+
+        SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        userId = sp.getString("userId", "sample");
         // Storage Permission
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
@@ -108,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.child("Users").child(firebaseUser.getPhoneNumber()).getValue(User.class);
+                progressBar.setVisibility(View.GONE);
+                User user = snapshot.child("Users").child(userId).getValue(User.class);
                 if (user == null){}
                 else {
                     name.setText(user.getName());
@@ -117,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                     add.setText(user.getAddress());
                     fath.setText(user.getFather());
                 }
-                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -132,50 +136,60 @@ public class MainActivity extends AppCompatActivity {
     }
     public void createPdf(){
 
-        PdfDocument pdfDocument = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300,600,1).create();
-        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+        if (email.getText().toString().isEmpty()){
+            Toast.makeText(MainActivity.this,"Please enter your email-id.",Toast.LENGTH_SHORT).show();
 
-        Paint paint = new Paint();
-        String namee = "Name :- "+name.getText().toString();
-        String agee = "Age :- "+age.getText().toString();
-        String emaill = "Email-Id :- "+email.getText().toString();
-        String addd = "Address :- "+add.getText().toString();
-        String fathh = "Father's Name :- "+fath.getText().toString();
+        }else {
+            SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("userId",email.getText().toString());
+            editor.commit();
 
-        writeNewUser(firebaseUser.getPhoneNumber(), name.getText().toString(), age.getText().toString(), email.getText().toString(),
-                add.getText().toString(), fath.getText().toString());
+            PdfDocument pdfDocument = new PdfDocument();
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300,600,1).create();
+            PdfDocument.Page page = pdfDocument.startPage(pageInfo);
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(namee);
-        arrayList.add(agee);
-        arrayList.add(emaill);
-        arrayList.add(addd);
-        arrayList.add(fathh);
-        int x=10,y=25;
+            Paint paint = new Paint();
+            String namee = "Name :- "+name.getText().toString();
+            String agee = "Age :- "+age.getText().toString();
+            String emaill = "Email-Id :- "+email.getText().toString();
+            String addd = "Address :- "+add.getText().toString();
+            String fathh = "Father's Name :- "+fath.getText().toString();
 
-        for (int i=0;i<arrayList.size();i++){
-            page.getCanvas().drawText(arrayList.get(i), x, y, paint);
-            y += paint.descent() - paint.ascent();
+            writeNewUser(email.getText().toString(), name.getText().toString(), age.getText().toString(), email.getText().toString(),
+                    add.getText().toString(), fath.getText().toString());
+
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(namee);
+            arrayList.add(agee);
+            arrayList.add(emaill);
+            arrayList.add(addd);
+            arrayList.add(fathh);
+            int x=10,y=25;
+
+            for (int i=0;i<arrayList.size();i++){
+                page.getCanvas().drawText(arrayList.get(i), x, y, paint);
+                y += paint.descent() - paint.ascent();
+            }
+            pdfDocument.finishPage(page);
+
+            String directory_path = Environment.getExternalStorageDirectory().getPath() + "/SampleCrud/";
+            File file = new File(directory_path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+
+            String filePath = directory_path + "Resume.pdf";
+            File filee = new File(filePath);
+            try {
+                pdfDocument.writeTo(new FileOutputStream(filee));
+                Toast.makeText(MainActivity.this,"Resume saved to :- "+filePath,Toast.LENGTH_SHORT).show();
+            }catch (Exception ex){
+                ex.printStackTrace();
+                Toast.makeText(MainActivity.this,"Error !",Toast.LENGTH_SHORT).show();
+            }
+            pdfDocument.close();
         }
-        pdfDocument.finishPage(page);
-
-        String directory_path = Environment.getExternalStorageDirectory().getPath() + "/SampleCrud/";
-        File file = new File(directory_path);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-
-        String filePath = directory_path + "Resume.pdf";
-        File filee = new File(filePath);
-        try {
-            pdfDocument.writeTo(new FileOutputStream(filee));
-            Toast.makeText(MainActivity.this,"Resume saved to :- "+filePath,Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            ex.printStackTrace();
-            Toast.makeText(MainActivity.this,"Error !",Toast.LENGTH_SHORT).show();
-        }
-        pdfDocument.close();
     }
     public void checkPermission(int requestCode)
     {
